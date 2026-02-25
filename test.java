@@ -14,24 +14,44 @@ public class test {
         double totalTime = 0.0;
         int n = N;
         int repetition, repetitions = 30;
-
-        for (int i=0; i<N;i++){
-            sorted[i] = i + 1;
-            unsorted[i] = i + 1;
-        }
-          shuffleArray(unsorted);
-        runTime = 0;
+         // Load data from file
+        loadData("ulysses.numbered");
+        
+        // Create sorted copy for binary search
+        sortedRecords = records.clone();
+        Arrays.sort(sortedRecords, (a, b) -> Integer.compare(a.key, b.key));
+        
+        // Generate 30 random keys for testing
+        int[] testKeys = generateRandomKeys(30, 1, 32654);
+        
+        System.out.println("Starting timing experiments with " + repetitions + " repetitions...");
+        System.out.println("Each repetition performs 30 key lookups");
+        System.out.println("------------------------------------------------");
+        
         for(repetition = 0; repetition < repetitions; repetition++) {
-            int key =(int)(Math.random() *N) + 1;
+            // Time linear search
             start = System.currentTimeMillis();
-            // call the procedures to time here:
-            linearsearch(unsorted, key);
-            binarysearch(sorted,key);
-
+            for(int key : testKeys) {
+                linearSearch(key);
+            }
             finish = System.currentTimeMillis();
-
             time = (double)(finish - start);
-            runTime += time;
-            runTime2 += (time*time);
+            linearRunTime += time;
+            linearRunTime2 += (time * time);
+            
+            // Time binary search
+            start = System.currentTimeMillis();
+            for(int key : testKeys) {
+                binarySearch(key);
+            }
+            finish = System.currentTimeMillis();
+            time = (double)(finish - start);
+            binaryRunTime += time;
+            binaryRunTime2 += (time * time);
+            
+            // Shuffle keys for next repetition to avoid caching effects
+            shuffleArray(testKeys);
         }
+
+       
         
