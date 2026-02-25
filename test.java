@@ -1,5 +1,6 @@
 //Mosa Nkuna
 //4446478
+import java.io.*;
 public class test {
     public static int N = 32654;
     static int[] sorted = new int[N];
@@ -129,6 +130,68 @@ public class test {
             createSampleData();
         }
     }
+    // Create sample data if file not found
+    static void createSampleData() {
+        records = new Node[1000];
+        for (int i = 0; i < 1000; i++) {
+            int key = 1 + (int)(Math.random() * 32654);
+            records[i] = new Node(key, "Sample data for key " + key);
+        }
+        System.out.println("Created " + records.length + " sample records for testing");
+    }
+    
+    // Generate random keys
+    static int[] generateRandomKeys(int count, int min, int max) {
+        int[] keys = new int[count];
+        Random rand = new Random();
+        for (int i = 0; i < count; i++) {
+            keys[i] = min + rand.nextInt(max - min + 1);
+        }
+        return keys;
+    }
+    
+    // Shuffle array of keys
+    static void shuffleArray(int[] array) {
+        Random rand = new Random();
+        for (int i = array.length - 1; i > 0; i--) {
+            int index = rand.nextInt(i + 1);
+            int temp = array[index];
+            array[index] = array[i];
+            array[i] = temp;
+        }
+    }
+    
+    // Linear search implementation
+    static String linearSearch(int key) {
+        for (Node node : records) {
+            if (node.key == key) {
+                return node.data;
+            }
+        }
+        return null; // Key not found
+    }
+    
+    // Binary search implementation
+    static String binarySearch(int key) {
+        int left = 0;
+        int right = sortedRecords.length - 1;
+        
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            
+            if (sortedRecords[mid].key == key) {
+                return sortedRecords[mid].data;
+            }
+            
+            if (sortedRecords[mid].key < key) {
+                left = mid + 1;
+            } else {
+                right = mid - 1;
+            }
+        }
+        return null; // Key not found
+    }
+}
 
        
         
